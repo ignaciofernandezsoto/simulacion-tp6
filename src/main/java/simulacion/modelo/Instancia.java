@@ -9,7 +9,7 @@ public class Instancia {
 	private static final int MAX_REQUESTS = 250;
 
 	private int cantRequests = 0;
-	private Integer ITC = 0;
+	private long ITC = 0;
 	private List<Hilo> hilos = new ArrayList<>();
 
 	public Instancia(int cantHilos) {
@@ -30,13 +30,13 @@ public class Instancia {
 		Hilo hiloConMenorTPS = hilos.get(0);
 
 		for(int i=1; i< hilos.size(); i++) {
-			if(hiloConMenorTPS.getTPS().compareTo(hilos.get(i).getTPS()) > 1)
+			if(hiloConMenorTPS.getTPS() > hilos.get(i).getTPS())
 				hiloConMenorTPS = hilos.get(i);
 		}
 		return hiloConMenorTPS;
 	}
 
-	public Integer getMenorTPS() {
+	public long getMenorTPS() {
 		return this.getHiloMenorTPS().getTPS();
 	}
 
@@ -44,15 +44,15 @@ public class Instancia {
 		return cantRequests;
 	}
 
-	public void addTPS(Integer tps){
+	public void addTPS(long tps){
 		this.getHiloMenorTPS().setTPS(tps);
 	}
 
-	public void setITC(Integer itc){
+	public void setITC(long itc){
 		this.ITC = itc;
 	}
 
-	public Integer getITC(){
+	public long getITC(){
 		return ITC;
 	}
 	
