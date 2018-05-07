@@ -17,15 +17,10 @@ public class Main {
 		System.out.println("Ingrese la cantidad de hilos por instancia que desea simular");
 		Integer hilosPorInstancia = sc.nextInt();
 
-		System.out.println("Comenzando con la simulacion de aplicación HTTP con "
+		System.out.println("Comenzando la simulacion de la aplicación HTTP con "
                 + instancias + "servidores con " + hilosPorInstancia +" hilos por cada servidor");
 
-		Simulacion simulacion = new Simulacion(instancias, hilosPorInstancia);
-		simulacion.simular();
-
-
-
-		
+		new Simulacion(instancias, hilosPorInstancia);
 	}
 	
 }

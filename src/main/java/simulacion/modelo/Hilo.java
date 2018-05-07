@@ -1,15 +1,17 @@
 package simulacion.modelo;
 
+import java.math.BigDecimal;
+
 public class Hilo {
 
-	private Instancia padre;
-	private Integer TPS;
+	private static int HV = 86400000*2;
+	private BigDecimal TPS = new BigDecimal(HV);
 
-	public Integer getTPS() {
+	public BigDecimal getTPS() {
 		return TPS;
 	}
 
-	public void setTPS(Integer TPS) {
+	public void setTPS(BigDecimal TPS) {
 		this.TPS = TPS;
 	}
 }

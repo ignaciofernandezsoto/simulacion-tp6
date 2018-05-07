@@ -10,20 +10,23 @@ import simulacion.fdp.TiempoDeAtencion;
 
 public class Simulacion {
 
-	private static final int tiempoFinal = 86400000;
-	private static int HV = 86400000*2;
+	//TO DO: FIJARSE QUÉ TIEMPO FINAL PODRÍAMOS PONER DEBUDO A UN STACK OVERFLOW
+	private static final BigDecimal tiempoFinal = new BigDecimal(5E-10);
+	private static BigDecimal HV = new BigDecimal(86400000*2);
 	private static final int MAX_REQUESTS = 250;
 
 	private FDP intervaloEntreArribos = new IntervaloEntreArribos();
 	private FDP tiempoDeAtencion = new TiempoDeAtencion();
 
-	private Integer STLL = 0;
-	private Integer STO = 0;
-	private Integer ITO = 0;
-	private Integer TPLL = 0;
-	private Integer T = 0;
+	private BigDecimal STLL = new BigDecimal(0) ;
+	private BigDecimal STO = new BigDecimal(0);
+	private BigDecimal ITO = new BigDecimal(0);
+	private BigDecimal TPLL = new BigDecimal(0);
+	private BigDecimal STC = new BigDecimal(0);
+	private BigDecimal STS = new BigDecimal(0);
+	private BigDecimal T = new BigDecimal(0);
 	private int NT = 0;
-	private int NT_TimeOut = 0;
+	private int NTimeOut = 0;
 	private int cantHilos;
 
 	private List<Instancia> instancias = new ArrayList();
@@ -33,19 +36,20 @@ public class Simulacion {
 		for (int i = 0; i < cantInstancias; i++) {
 			instancias.add(new Instancia(cantHilosPorInstancia));
 		}
+		this.simular();
 	}
 
-	private Integer getMenorTPS() {
-		Integer menorTPS = instancias.get(0).getMenorTPS();
+	private Instancia getInstanciaMenorTPS() {
+		Instancia instMenorTPS = instancias.get(0);
 
 		for(int i=1; i < instancias.size(); i++) {
-			if(menorTPS > instancias.get(i).getMenorTPS())
-				menorTPS = instancias.get(i).getMenorTPS();
+			if(instMenorTPS.getMenorTPS().compareTo(instancias.get(i).getMenorTPS()) > 1)
+				instMenorTPS = instancias.get(i);
 		}
-		return menorTPS;
+		return instMenorTPS;
 	}
 
-	private Instancia getInstanciaConMenorCantRequests() {
+	private Instancia getInstanciaMenorNS() {
 		Instancia instancia = instancias.get(0);
 
 		for(int i=0; i < instancias.size(); i++){
@@ -55,50 +59,73 @@ public class Simulacion {
 		return instancia;
 	}
 
-	public Resultado simularLlegada() {
+	public void simularLlegada() {
 		NT ++;
-		STLL += TPLL;
+		STLL = (STLL.add(TPLL));
 		T = TPLL;
 
 		BigDecimal IA = this.intervaloEntreArribos.obtenerValor(Math.random());
-		TPLL = T + IA.intValueExact();
+		TPLL = T.add(IA);
 
-		Instancia instMenorRequests = this.getInstanciaConMenorCantRequests();
-		if(instMenorRequests.getRequests() <= MAX_REQUESTS) {
-			NT_TimeOut ++;
-			this.simular();
+		Instancia instMenorRequests = this.getInstanciaMenorNS();
+		if(instMenorRequests.getRequests() >= MAX_REQUESTS) {
+			NTimeOut++;
 		}
 		else{
-			instMenorRequests.addRequest();
+			instMenorRequests.agregarRequest();
 			if(instMenorRequests.getRequests() <= cantHilos) {
 				BigDecimal TA = tiempoDeAtencion.obtenerValor(Math.random());
-				instMenorRequests.addTPSHiloMenorTPS(T + TA.intValue());
-				STO += T - ITO;
+				instMenorRequests.addTPS(T.add(TA));
+				STO = (STO.add(T.subtract(ITO)));
 			}
 			else{
 				instMenorRequests.setITC(T);
 			}
-
-			if(T >= tiempoFinal){
-				if(instancias.stream().mapToInt(instancia -> instancia.getRequests()).sum() == 0) return this.imprimirResultados();
-				else TPLL = HV;
-			}
-			else this.simular();
 		}
-		return null;
 	}
 
-	public Resultado simularSalida() {
+	public void simularSalida() {
+		Instancia instMenorTPS = this.getInstanciaMenorTPS();
+
+		STC = STC.add(T.subtract(instMenorTPS.getITC()));
+		T = instMenorTPS.getMenorTPS();
+		STS = STC.add(instMenorTPS.getMenorTPS()); // se podría con T pero para dejarlo "metódicamente" y hacerlo lindo
+		instMenorTPS.restarRequest();
+
+		if(instMenorTPS.getRequests() >= 1){
+			BigDecimal TA = tiempoDeAtencion.obtenerValor(Math.random());
+			instMenorTPS.addTPS(T.add(TA));
+		}
+		else{
+			instMenorTPS.addTPS(HV);
+			ITO = T;
+		}
+
 	}
 
-	public Resultado imprimirResultados(){
-
+	public void imprimirResultados(Resultado resultado){
+		System.out.println("Cantidad de Requests " + NT);
+		System.out.println("El Porcentaje de Tiempo Ocioso es : " + resultado.PTO);
+		System.out.println("El Promedio de Espera en Cola es : " + resultado.PEC);
+		System.out.println("El Promedio de permanencia en el sistema es : " + resultado.PPS);
+		System.out.println("El Porcentaje de TimeOut es: " + resultado.PT);
 	}
-	public Resultado simular() {
-		Integer menorTPS = this.getMenorTPS();
-		if(TPLL <= menorTPS) return this.simularLlegada();
-		else return this.simularSalida();
 
+	public void simular() {
+		BigDecimal menorTPS = this.getInstanciaMenorTPS().getMenorTPS();
+		if(TPLL.compareTo(menorTPS) == -1 || TPLL.compareTo(menorTPS) == 0) this.simularLlegada();
+		else this.simularSalida();
+		if(T.compareTo(tiempoFinal) == 1 || T.compareTo(tiempoFinal) == 0){
+			if(instancias.stream().mapToInt(Instancia::getRequests).sum() == 0) {
+				this.imprimirResultados(new Resultado(NTimeOut * 100 / NT,
+						STO.multiply(new BigDecimal(100)).divide(T),
+						STC.multiply(new BigDecimal(100)).divide(T),
+						(STS.subtract(STLL)).divide(new BigDecimal(NT))));
+				return;
+			}
+			else TPLL = HV;
+		}
+		this.simular();
 	}
 
 }
