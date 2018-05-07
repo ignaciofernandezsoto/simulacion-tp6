@@ -146,12 +146,10 @@ public class Simulacion {
 		return instancias.stream().mapToInt(Instancia::getRequests).sum() == 0;
 	}
 
-	private int contadorDeEventos = 0;
-
 	private void simular() {
 
-		System.out.println("EVENTO NUMERO " + contadorDeEventos);
-		contadorDeEventos ++;
+		if(T % 5000 == 0)
+			System.out.println("TIEMPO: " + T);
 
 		Integer menorTPS = this.getInstanciaMenorTPS().getMenorTPS();
 
