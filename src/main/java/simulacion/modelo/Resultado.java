@@ -4,12 +4,12 @@ import java.math.BigDecimal;
 
 public class Resultado {
 
-    public Integer PT;
-    public BigDecimal PTO;
-    public BigDecimal PEC;
-    public BigDecimal PPS;
+    public double PT;
+    public double PTO;
+    public double PEC;
+    public double PPS;
 
-    public Resultado(Integer PT, BigDecimal PTO, BigDecimal PEC, BigDecimal PPS) {
+    public Resultado(double PT, double PTO, double PEC, double PPS) {
         this.PT = PT;
         this.PTO = PTO;
         this.PEC = PEC;

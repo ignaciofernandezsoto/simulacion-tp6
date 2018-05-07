@@ -1,4 +1,4 @@
-package simulacion.fdp;
+package simulacion.modelo.fdp;
 
 import java.math.BigDecimal;
 

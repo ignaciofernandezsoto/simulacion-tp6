@@ -9,7 +9,7 @@ public class Instancia {
 	private static final int MAX_REQUESTS = 250;
 
 	private int cantRequests = 0;
-	private BigDecimal ITC = new BigDecimal(0);
+	private Integer ITC = 0;
 	private List<Hilo> hilos = new ArrayList<>();
 
 	public Instancia(int cantHilos) {
@@ -36,7 +36,7 @@ public class Instancia {
 		return hiloConMenorTPS;
 	}
 
-	public BigDecimal getMenorTPS() {
+	public Integer getMenorTPS() {
 		return this.getHiloMenorTPS().getTPS();
 	}
 
@@ -44,15 +44,15 @@ public class Instancia {
 		return cantRequests;
 	}
 
-	public void addTPS(BigDecimal tps){
+	public void addTPS(Integer tps){
 		this.getHiloMenorTPS().setTPS(tps);
 	}
 
-	public void setITC(BigDecimal itc){
+	public void setITC(Integer itc){
 		this.ITC = itc;
 	}
 
-	public BigDecimal getITC(){
+	public Integer getITC(){
 		return ITC;
 	}
 	
