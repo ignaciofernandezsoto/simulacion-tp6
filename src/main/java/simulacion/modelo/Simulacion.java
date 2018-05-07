@@ -10,7 +10,7 @@ import simulacion.fdp.TiempoDeAtencion;
 
 public class Simulacion {
 
-	private static final int milisegundosDeSimulacion = 86400000;
+	private static final int tiempoFinal = 86400000;
 	private static int HV = 86400000*2;
 	private static final int MAX_REQUESTS = 250;
 
@@ -18,6 +18,8 @@ public class Simulacion {
 	private FDP tiempoDeAtencion = new TiempoDeAtencion();
 
 	private Integer STLL = 0;
+	private Integer STO = 0;
+	private Integer ITO = 0;
 	private Integer TPLL = 0;
 	private Integer T = 0;
 	private int NT = 0;
@@ -38,9 +40,8 @@ public class Simulacion {
 
 		for(int i=1; i < instancias.size(); i++) {
 			if(menorTPS > instancias.get(i).getMenorTPS())
-				menorTPS = instancias.get(i).getMenorTPS()
+				menorTPS = instancias.get(i).getMenorTPS();
 		}
-
 		return menorTPS;
 	}
 
@@ -54,7 +55,7 @@ public class Simulacion {
 		return instancia;
 	}
 
-	public void simularLlegada() {
+	public Resultado simularLlegada() {
 		NT ++;
 		STLL += TPLL;
 		T = TPLL;
@@ -71,20 +72,32 @@ public class Simulacion {
 			instMenorRequests.addRequest();
 			if(instMenorRequests.getRequests() <= cantHilos) {
 				BigDecimal TA = tiempoDeAtencion.obtenerValor(Math.random());
-				instMenorRequests.
+				instMenorRequests.addTPSHiloMenorTPS(T + TA.intValue());
+				STO += T - ITO;
 			}
+			else{
+				instMenorRequests.setITC(T);
+			}
+
+			if(T >= tiempoFinal){
+				if(instancias.stream().mapToInt(instancia -> instancia.getRequests()).sum() == 0) return this.imprimirResultados();
+				else TPLL = HV;
+			}
+			else this.simular();
 		}
-
+		return null;
 	}
 
-	public void simularSalida() {
-
+	public Resultado simularSalida() {
 	}
 
+	public Resultado imprimirResultados(){
+
+	}
 	public Resultado simular() {
 		Integer menorTPS = this.getMenorTPS();
-		if(TPLL <= menorTPS) this.simularLlegada();
-		else this.simularSalida();
+		if(TPLL <= menorTPS) return this.simularLlegada();
+		else return this.simularSalida();
 
 	}
 

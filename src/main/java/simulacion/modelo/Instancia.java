@@ -40,6 +40,12 @@ public class Instancia {
 		return cantRequests;
 	}
 
+	public void addTPSHiloMenorTPS(Integer tps){
+		this.getHiloMenorTPS().setTPS(tps);
+	}
 
+	public void setITC(Integer itc){
+		this.setITC(itc);
+	}
 	
 }
