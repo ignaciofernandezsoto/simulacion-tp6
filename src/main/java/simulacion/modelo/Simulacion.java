@@ -1,6 +1,5 @@
 package simulacion.modelo;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +34,7 @@ public class Simulacion {
 		for (int i = 0; i < cantInstancias; i++) {
 			instancias.add(new Instancia(cantHilosPorInstancia));
 		}
-		this.simular();
+		this.obtenerResultado();
 	}
 
 	private Instancia getInstanciaMenorTPS() {
@@ -110,25 +109,57 @@ public class Simulacion {
 		System.out.println("El Porcentaje de TimeOut es: " + resultado.PT);
 	}
 
-	public void simular() {
-		Integer menorTPS = this.getInstanciaMenorTPS().getMenorTPS();
-		if(TPLL.compareTo(menorTPS) == -1 || TPLL.compareTo(menorTPS) == 0) this.simularLlegada();
-		else this.simularSalida();
-		if(T.compareTo(tiempoFinal) == 1 || T.compareTo(tiempoFinal) == 0){
-			if(instancias.stream().mapToInt(Instancia::getRequests).sum() == 0) {
-				this.imprimirResultados(
-						new Resultado(
-								NTimeOut * 100 / NT,
-							STO * 100 / T,
-							STC * 100 / T,
-							(STS - STLL) / NT
-						)
-				);
-				return;
-			}
-			else TPLL = HV;
+	public void obtenerResultado() {
+
+		while(T <= tiempoFinal) {
+
+			simular();
+
 		}
-		this.simular();
+
+		vaciar();
+
+		this.imprimirResultados(
+				new Resultado(
+						NTimeOut * 100 / NT,
+						STO * 100 / T,
+						STC * 100 / T,
+						(STS - STLL) / NT
+				)
+		);
+
+	}
+
+	private void vaciar() {
+
+		TPLL = HV;
+
+		while (hayQueVaciar()) {
+
+			simular();
+
+		}
+
+	}
+
+	private boolean hayQueVaciar() {
+		return instancias.stream().mapToInt(Instancia::getRequests).sum() == 0;
+	}
+
+	private int contadorDeEventos = 0;
+
+	private void simular() {
+
+		System.out.println("EVENTO NUMERO " + contadorDeEventos);
+		contadorDeEventos ++;
+
+		Integer menorTPS = this.getInstanciaMenorTPS().getMenorTPS();
+
+		if(TPLL <= menorTPS)
+			this.simularLlegada();
+		else
+			this.simularSalida();
+
 	}
 
 }

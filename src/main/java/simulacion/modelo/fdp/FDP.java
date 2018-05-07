@@ -7,22 +7,19 @@ public abstract class FDP {
 	
 	public Integer obtenerValor() {
 
-
 		double probabilidad = Math.random();
 
-		System.out.println("Probabilidad de " + probabilidad);
-
-		double numeradorDelExponenteDeE = Math.log(probabilidad) - mu().doubleValue();
-		double exponenteDeE = -Math.pow(numeradorDelExponenteDeE, 2) / (2 * Math.pow(sigma().doubleValue(), 2));
-		BigDecimal numerador = new BigDecimal(Math.pow(Math.E, exponenteDeE));
-		BigDecimal denominador = sigma().multiply(new BigDecimal(probabilidad)).multiply(new BigDecimal(Math.sqrt(2 * Math.PI)));
+		double numeradorDelExponenteDeE = Math.log(probabilidad) - mu();
+		double exponenteDeE = -Math.pow(numeradorDelExponenteDeE, 2) / (2 * Math.pow(sigma(), 2));
+		double numerador = Math.pow(Math.E, exponenteDeE);
+		double denominador = sigma() * probabilidad * Math.sqrt(2 * Math.PI);
 		
-		return numerador.divide(denominador, 50, RoundingMode.HALF_UP).intValue();
+		return new Double(numerador / denominador).intValue();
 		
 	}
 	
-	protected abstract BigDecimal sigma();
+	protected abstract double sigma();
 	
-	protected abstract BigDecimal mu();
+	protected abstract double mu();
 	
 }
