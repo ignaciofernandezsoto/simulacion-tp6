@@ -9,22 +9,22 @@ import simulacion.modelo.fdp.TiempoDeAtencion;
 
 public class Simulacion {
 
-	private static final Integer tiempoFinal = 86400000;
-	public static Integer HV = tiempoFinal*2;
+	private static final Double tiempoFinal = 86400000D;
+	public static Double HV = tiempoFinal*2;
 	private static final int MAX_REQUESTS = 250;
 
 	private FDP intervaloEntreArribos = new IntervaloEntreArribos();
 	private FDP tiempoDeAtencion = new TiempoDeAtencion();
 
-	private long STLL = 0;
-	private long STO = 0;
-	private long ITO = 0;
-	private long TPLL = 0;
-	private long STC = 0;
-	private long STS = 0;
-	private long T = 0;
-	private long NT = 0;
-	private long NTimeOut = 0;
+	private Double STLL = 0D;
+	private Double STO = 0D;
+	private Double ITO = 0D;
+	private Double TPLL = 0D;
+	private Double STC = 0D;
+	private Double STS = 0D;
+	private Double T = 0D;
+	private Double NT = 0D;
+	private Double NTimeOut = 0D;
 	private int cantHilos;
 
 	private List<Instancia> instancias = new ArrayList();
@@ -112,20 +112,17 @@ public class Simulacion {
 
 		System.out.println("Cantidad de Requests " + NT);
 		System.out.println("El Porcentaje de Tiempo Ocioso es : " + resultado.PTO + "%");
-		System.out.println("El Promedio de Espera en Cola es : " + resultado.PEC);
-		System.out.println("El Promedio de permanencia en el sistema es : " + resultado.PPS);
+		System.out.println("El Promedio de Espera en Cola es : " + resultado.PEC + "milisegundos");
+		System.out.println("El Promedio de permanencia en el sistema es : " + resultado.PPS + "milisegundos");
 		System.out.println("El Porcentaje de TimeOut es: " + resultado.PT + "%");
 
 	}
 
 	public void obtenerResultado() {
 
-		while(T <= tiempoFinal) {
-
+		while(T <= tiempoFinal)
 			simular();
-
-		}
-
+		
 		vaciar();
 
 		this.imprimirResultados();
@@ -142,7 +139,7 @@ public class Simulacion {
 	}
 
 	private boolean hayQueVaciar() {
-		return instancias.stream().mapToInt(Instancia::getRequests).sum() == 0;
+		return instancias.stream().mapToDouble(Instancia::getRequests).sum() == 0;
 	}
 
 	private void simular() {
@@ -150,7 +147,7 @@ public class Simulacion {
 		if(T % 5000 == 0)
 			System.out.println("TIEMPO: " + T);
 
-		long menorTPS = this.getInstanciaMenorTPS().getMenorTPS();
+		Double menorTPS = this.getInstanciaMenorTPS().getMenorTPS();
 
 		if(TPLL <= menorTPS)
 			this.simularLlegada();

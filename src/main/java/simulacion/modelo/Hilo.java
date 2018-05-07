@@ -2,13 +2,13 @@ package simulacion.modelo;
 
 public class Hilo {
 
-	private long TPS = Simulacion.HV;
+	private Double TPS = Simulacion.HV;
 
-	public long getTPS() {
+	public Double getTPS() {
 		return TPS;
 	}
 
-	public void setTPS(long TPS) {
+	public void setTPS(Double TPS) {
 		this.TPS = TPS;
 	}
 }

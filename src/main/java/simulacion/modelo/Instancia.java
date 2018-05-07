@@ -8,8 +8,8 @@ public class Instancia {
 
 	private static final int MAX_REQUESTS = 250;
 
-	private int cantRequests = 0;
-	private long ITC = 0;
+	private Double cantRequests = 0D;
+	private Double ITC = 0D;
 	private List<Hilo> hilos = new ArrayList<>();
 
 	public Instancia(int cantHilos) {
@@ -36,23 +36,23 @@ public class Instancia {
 		return hiloConMenorTPS;
 	}
 
-	public long getMenorTPS() {
+	public Double getMenorTPS() {
 		return this.getHiloMenorTPS().getTPS();
 	}
 
-	public int getRequests(){
+	public Double getRequests(){
 		return cantRequests;
 	}
 
-	public void addTPS(long tps){
+	public void addTPS(Double tps){
 		this.getHiloMenorTPS().setTPS(tps);
 	}
 
-	public void setITC(long itc){
+	public void setITC(Double itc){
 		this.ITC = itc;
 	}
 
-	public long getITC(){
+	public Double getITC(){
 		return ITC;
 	}
 	
