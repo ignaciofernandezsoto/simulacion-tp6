@@ -8,6 +8,7 @@ public class Instancia {
 	private static final int MAX_REQUESTS = 250;
 
 	private int cantRequests = 0;
+	private Integer ITC = 0;
 	private List<Hilo> hilos = new ArrayList<>();
 
 	public Instancia(int cantHilos) {
@@ -16,15 +17,23 @@ public class Instancia {
 		}
 	}
 
-	public Integer getMenorTPS(){
-		Integer menorTPS = hilos.get(0).getTPS();
+	public void addRequest() {
+		cantRequests ++;
+	}
+
+	private Hilo getHiloMenorTPS(){
+		Hilo hiloConMenorTPS = hilos.get(0);
 
 		for(int i=1; i< hilos.size(); i++) {
-			if(menorTPS > hilos.get(i).getTPS())
-				menorTPS = hilos.get(i).getTPS();
+			if(hiloConMenorTPS.getTPS() > hilos.get(i).getTPS())
+				hiloConMenorTPS = hilos.get(i);
 		}
 
-		return menorTPS;
+		return hiloConMenorTPS;
+	}
+
+	public Integer getMenorTPS() {
+		return this.getHiloMenorTPS().getTPS();
 	}
 
 	public int getRequests(){
