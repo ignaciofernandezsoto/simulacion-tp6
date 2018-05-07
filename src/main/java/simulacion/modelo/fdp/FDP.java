@@ -14,7 +14,7 @@ public abstract class FDP {
 		double numerador = Math.pow(Math.E, exponenteDeE);
 		double denominador = sigma() * probabilidad * Math.sqrt(2 * Math.PI);
 		
-		return new Double(numerador / denominador).intValue();
+		return new Double(new Double(1000000000) * new Double(1000000000) * numerador / denominador).intValue();
 		
 	}
 	

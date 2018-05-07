@@ -2,8 +2,7 @@ package simulacion.modelo;
 
 public class Hilo {
 
-	private static int HV = Simulacion.HV;
-	private Integer TPS = HV;
+	private Integer TPS = Simulacion.HV;
 
 	public Integer getTPS() {
 		return TPS;
