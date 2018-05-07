@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="24949665-0c30-4c90-bdd8-93cf7550a159" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/simulacion/modelo/Hilo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulacion/modelo/Hilo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/simulacion/modelo/Instancia.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulacion/modelo/Instancia.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/simulacion/modelo/Simulacion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/simulacion/modelo/Simulacion.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/simulacion/modelo/Simulacion.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/simulacion/modelo/Simulacion.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/simulacion/modelo/fdp/FDP.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/simulacion/modelo/fdp/FDP.class" afterDir="false" />
-    </list>
+    <list default="true" id="24949665-0c30-4c90-bdd8-93cf7550a159" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -31,11 +24,11 @@
       <file leaf-file-name="Simulacion.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/simulacion/modelo/Simulacion.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="137">
-              <caret line="144" column="47" selection-start-line="144" selection-start-column="47" selection-end-line="144" selection-end-column="47" />
+            <state relative-caret-position="217">
+              <caret line="124" column="8" selection-start-line="124" selection-start-column="8" selection-end-line="124" selection-end-column="8" />
               <folding>
-                <element signature="e#3394#3395#0" expanded="true" />
-                <element signature="e#3471#3472#0" expanded="true" />
+                <element signature="e#3448#3449#0" expanded="true" />
+                <element signature="e#3528#3529#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -46,40 +39,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="209">
               <caret line="11" column="27" selection-start-line="11" selection-start-column="27" selection-end-line="11" selection-end-column="27" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Instancia.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/simulacion/modelo/Instancia.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="218">
-              <caret line="47" column="35" selection-start-line="47" selection-start-column="35" selection-end-line="47" selection-end-column="35" />
-              <folding>
-                <element signature="e#808#809#0" expanded="true" />
-                <element signature="e#853#854#0" expanded="true" />
-                <element signature="e#881#882#0" expanded="true" />
-                <element signature="e#907#908#0" expanded="true" />
-                <element signature="e#945#946#0" expanded="true" />
-                <element signature="e#986#987#0" expanded="true" />
-                <element signature="e#1024#1025#0" expanded="true" />
-                <element signature="e#1045#1046#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Hilo.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/simulacion/modelo/Hilo.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="190">
-              <caret line="10" column="16" selection-start-line="10" selection-start-column="16" selection-end-line="10" selection-end-column="16" />
-              <folding>
-                <element signature="e#191#192#0" expanded="true" />
-                <element signature="e#208#209#0" expanded="true" />
-                <element signature="e#247#248#0" expanded="true" />
-                <element signature="e#268#269#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -317,12 +276,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1525720608636</updated>
-      <workItem from="1525720614052" duration="5857000" />
+      <workItem from="1525720614052" duration="6143000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5857000" />
+    <option name="totallyTimeSpent" value="6143000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
@@ -485,11 +444,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/simulacion/modelo/Simulacion.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="137">
-          <caret line="144" column="47" selection-start-line="144" selection-start-column="47" selection-end-line="144" selection-end-column="47" />
+        <state relative-caret-position="217">
+          <caret line="124" column="8" selection-start-line="124" selection-start-column="8" selection-end-line="124" selection-end-column="8" />
           <folding>
-            <element signature="e#3394#3395#0" expanded="true" />
-            <element signature="e#3471#3472#0" expanded="true" />
+            <element signature="e#3448#3449#0" expanded="true" />
+            <element signature="e#3528#3529#0" expanded="true" />
           </folding>
         </state>
       </provider>

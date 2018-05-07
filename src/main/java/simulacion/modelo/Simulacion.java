@@ -112,8 +112,8 @@ public class Simulacion {
 
 		System.out.println("Cantidad de Requests " + NT);
 		System.out.println("El Porcentaje de Tiempo Ocioso es : " + resultado.PTO + "%");
-		System.out.println("El Promedio de Espera en Cola es : " + resultado.PEC + "milisegundos");
-		System.out.println("El Promedio de permanencia en el sistema es : " + resultado.PPS + "milisegundos");
+		System.out.println("El Promedio de Espera en Cola es : " + resultado.PEC + " milisegundos");
+		System.out.println("El Promedio de permanencia en el sistema es : " + resultado.PPS + " milisegundos");
 		System.out.println("El Porcentaje de TimeOut es: " + resultado.PT + "%");
 
 	}
@@ -122,7 +122,7 @@ public class Simulacion {
 
 		while(T <= tiempoFinal)
 			simular();
-		
+
 		vaciar();
 
 		this.imprimirResultados();
