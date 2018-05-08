@@ -9,7 +9,9 @@ import simulacion.modelo.fdp.TiempoDeAtencion;
 
 public class Simulacion {
 
-	private static final Double tiempoFinal = 86400000D;
+	private static final Double DURACION_DE_UN_DIA_SEGUNDOS = 86400D;
+
+	private static final Double tiempoFinal = DURACION_DE_UN_DIA_SEGUNDOS;
 	public static Double HV = tiempoFinal*2;
 	private static final int MAX_REQUESTS = 250;
 
@@ -62,17 +64,17 @@ public class Simulacion {
 		STLL += TPLL;
 		T = TPLL;
 
-		Integer IA = this.intervaloEntreArribos.obtenerValor();
+		Double IA = this.intervaloEntreArribos.obtenerValor();
 		TPLL = T + IA;
 
 		Instancia instMenorRequests = this.getInstanciaMenorNS();
-		if(instMenorRequests.getRequests() >= MAX_REQUESTS) {
+		if(instMenorRequests.getRequests() >= Math.min(MAX_REQUESTS, cantHilos)) {
 			NTimeOut++;
 		}
 		else{
 			instMenorRequests.agregarRequest();
 			if(instMenorRequests.getRequests() <= cantHilos) {
-				int TA = tiempoDeAtencion.obtenerValor();
+				Double TA = tiempoDeAtencion.obtenerValor();
 				instMenorRequests.addTPS(T + TA);
 				STO += T - ITO;
 			}
@@ -91,7 +93,7 @@ public class Simulacion {
 		instMenorTPS.restarRequest();
 
 		if(instMenorTPS.getRequests() >= 1){
-			Integer TA = tiempoDeAtencion.obtenerValor();
+			Double TA = tiempoDeAtencion.obtenerValor();
 			instMenorTPS.addTPS(T + TA);
 		}
 		else{
@@ -104,16 +106,16 @@ public class Simulacion {
 	public void imprimirResultados() {
 
 		Resultado resultado = new Resultado(
-				NTimeOut * 100 / NT,
-				STO * 100 / T,
-				STC * 100 / T,
-				(STS - STLL) / NT
+				NTimeOut/NT * 100,
+				STO/T * 100,
+				STC/T * 100,
+				STS/NT - STLL/NT
 		);
 
 		System.out.println("Cantidad de Requests " + NT);
 		System.out.println("El Porcentaje de Tiempo Ocioso es : " + resultado.PTO + "%");
-		System.out.println("El Promedio de Espera en Cola es : " + resultado.PEC + " milisegundos");
-		System.out.println("El Promedio de permanencia en el sistema es : " + resultado.PPS + " milisegundos");
+		System.out.println("El Promedio de Espera en Cola es : " + resultado.PEC + " segundos");
+		System.out.println("El Promedio de permanencia en el Sistema es : " + resultado.PPS + " segundos");
 		System.out.println("El Porcentaje de TimeOut es: " + resultado.PT + "%");
 
 	}
@@ -143,9 +145,6 @@ public class Simulacion {
 	}
 
 	private void simular() {
-
-		if(T % 5000 == 0)
-			System.out.println("TIEMPO: " + T);
 
 		Double menorTPS = this.getInstanciaMenorTPS().getMenorTPS();
 

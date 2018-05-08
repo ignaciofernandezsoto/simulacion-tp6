@@ -1,7 +1,5 @@
 package simulacion.modelo;
 
-import java.math.BigDecimal;
-
 public class Resultado {
 
     public double PT;

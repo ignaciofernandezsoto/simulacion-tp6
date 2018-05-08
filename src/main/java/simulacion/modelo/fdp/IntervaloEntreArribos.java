@@ -1,17 +1,16 @@
 package simulacion.modelo.fdp;
 
-import java.math.BigDecimal;
 
 public class IntervaloEntreArribos extends FDP {
 
 	@Override
-	protected double sigma() {
-		return 0.71553;
+	protected Double C() {
+		return 0.002473296D;
 	}
 
 	@Override
-	protected double mu() {
-		return 6.3325;
+	protected Double medioM() {
+		return 0.0897552655D;
 	}
 
 }

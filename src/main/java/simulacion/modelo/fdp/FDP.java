@@ -1,25 +1,17 @@
 package simulacion.modelo.fdp;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-
 public abstract class FDP {
 	
-	public Integer obtenerValor() {
+	public Double obtenerValor() {
 
-		double probabilidad = Math.random();
+		Double r = Math.random();
 
-		double numeradorDelExponenteDeE = Math.log(probabilidad) - mu();
-		double exponenteDeE = -Math.pow(numeradorDelExponenteDeE, 2) / (2 * Math.pow(sigma(), 2));
-		double numerador = Math.pow(Math.E, exponenteDeE);
-		double denominador = sigma() * probabilidad * Math.sqrt(2 * Math.PI);
-		
-		return new Double(new Double(1000000000) * new Double(1000000000) * numerador / denominador).intValue();
-		
+		return Math.sqrt((r + C()) / medioM());
+
 	}
 	
-	protected abstract double sigma();
+	protected abstract Double C();
 	
-	protected abstract double mu();
+	protected abstract Double medioM();
 	
 }
