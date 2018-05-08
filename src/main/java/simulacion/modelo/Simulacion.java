@@ -109,10 +109,10 @@ public class Simulacion {
 	public void imprimirResultados() {
 
 		Resultado resultado = new Resultado(
-				NTimeOut/NT * 100,
-				STO/T * 100,
-				STC/T * 100,
-				STS/NT - STLL/NT
+				(NTimeOut/NT) * 100,
+				(STO/T) * 100,
+				(STC/(T * (NT - NTimeOut))) * 100,
+				(STS/NT) - (STLL/NT)
 		);
 
 		System.out.println("Cantidad de Requests " + NT);
@@ -150,8 +150,6 @@ public class Simulacion {
 	private void simular() {
 
 		Double menorTPS = this.getInstanciaMenorTPS().getMenorTPS();
-
-		System.out.println(T);
 
 		if(TPLL <= menorTPS)
 			this.simularLlegada();
