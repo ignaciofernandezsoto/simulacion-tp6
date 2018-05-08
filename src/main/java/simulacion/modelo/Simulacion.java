@@ -61,8 +61,9 @@ public class Simulacion {
 
 	public void simularLlegada() {
 		NT ++;
-		STLL += TPLL;
 		T = TPLL;
+
+		Double TPLLAux = TPLL;
 
 		Double IA = this.intervaloEntreArribos.obtenerValor();
 		TPLL = T + IA;
@@ -72,6 +73,8 @@ public class Simulacion {
 			NTimeOut++;
 		}
 		else{
+			STLL += TPLLAux;
+
 			instMenorRequests.agregarRequest();
 			if(instMenorRequests.getRequests() <= cantHilos) {
 				Double TA = tiempoDeAtencion.obtenerValor();
@@ -115,7 +118,7 @@ public class Simulacion {
 		System.out.println("Cantidad de Requests " + NT);
 		System.out.println("El Porcentaje de Tiempo Ocioso es : " + resultado.PTO + "%");
 		System.out.println("El Promedio de Espera en Cola es : " + resultado.PEC + " segundos");
-		System.out.println("El Promedio de permanencia en el Sistema es : " + resultado.PPS + " segundos");
+		System.out.println("El Promedio de Permanencia en el Sistema es : " + resultado.PPS + " segundos");
 		System.out.println("El Porcentaje de TimeOut es: " + resultado.PT + "%");
 
 	}
@@ -141,12 +144,14 @@ public class Simulacion {
 	}
 
 	private boolean hayQueVaciar() {
-		return instancias.stream().mapToDouble(Instancia::getRequests).sum() == 0;
+		return instancias.stream().mapToDouble(Instancia::getRequests).sum() > 0D;
 	}
 
 	private void simular() {
 
 		Double menorTPS = this.getInstanciaMenorTPS().getMenorTPS();
+
+		System.out.println(T);
 
 		if(TPLL <= menorTPS)
 			this.simularLlegada();
