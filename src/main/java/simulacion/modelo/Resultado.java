@@ -2,10 +2,10 @@ package simulacion.modelo;
 
 public class Resultado {
 
-    public double PT;
-    public double PTO;
-    public double PEC;
-    public double PPS;
+    public Double PT;
+    public Double PTO;
+    public Double PEC;
+    public Double PPS;
 
     public Resultado(double PT, double PTO, double PEC, double PPS) {
         this.PT = PT;

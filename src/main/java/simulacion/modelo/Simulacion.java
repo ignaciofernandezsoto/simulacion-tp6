@@ -1,5 +1,6 @@
 package simulacion.modelo;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -115,11 +116,13 @@ public class Simulacion {
 				(STS/NT) - (STLL/NT)
 		);
 
+		DecimalFormat df = new DecimalFormat("#.##");
+
 		System.out.println("Cantidad de Requests " + NT);
-		System.out.println("El Porcentaje de Tiempo Ocioso es : " + resultado.PTO + "%");
-		System.out.println("El Promedio de Espera en Cola es : " + resultado.PEC + " segundos");
-		System.out.println("El Promedio de Permanencia en el Sistema es : " + resultado.PPS + " segundos");
-		System.out.println("El Porcentaje de TimeOut es: " + resultado.PT + "%");
+		System.out.println("El Porcentaje de Tiempo Ocioso es: " + df.format(resultado.PTO) + "%");
+		System.out.println("El Promedio de Espera en Cola es: " + df.format(resultado.PEC) + " segundos");
+		System.out.println("El Promedio de Permanencia en el Sistema es: " + df.format(resultado.PPS) + " segundos");
+		System.out.println("El Porcentaje de TimeOut es: " + df.format(resultado.PT) + "%");
 
 	}
 
