@@ -58,15 +58,15 @@ public class Instancia {
 	}
 	public void addSTO(Double tiempoActual) {
 		if(ITO > 0)
-		STO += tiempoActual - ITO;
+		STO += (tiempoActual - ITO);
 	}
 
 	public void setITO(Double tiempo){
 		ITO = tiempo;
 	}
 
-	public Double getSTO(){
-		return STO;
+	public Double getPTO(Double tiempoActual){
+		return STO/tiempoActual*100;
 	}
 
 	public void setITC(Double itc){
