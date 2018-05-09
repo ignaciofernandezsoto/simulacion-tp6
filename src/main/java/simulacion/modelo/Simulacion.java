@@ -70,7 +70,7 @@ public class Simulacion {
 		TPLL = T + IA;
 
 		Instancia instMenorRequests = this.getInstanciaMenorNS();
-		if(instMenorRequests.getRequests() >= Math.min(MAX_REQUESTS, cantHilos)) {
+		if(instMenorRequests.getRequests() > MAX_REQUESTS + cantHilos) {
 			NTimeOut++;
 		}
 		else{
@@ -95,6 +95,7 @@ public class Simulacion {
 		T = instMenorTPS.getMenorTPS();
 		STS += instMenorTPS.getMenorTPS(); // se podría con T pero para dejarlo "metódicamente" y hacerlo lindo
 		instMenorTPS.restarRequest();
+		ITO = T;
 
 		if(instMenorTPS.getRequests() >= 1){
 			Double TA = tiempoDeAtencion.obtenerValor();
@@ -102,7 +103,6 @@ public class Simulacion {
 		}
 		else{
 			instMenorTPS.addTPS(HV);
-			ITO = T;
 		}
 
 	}
@@ -112,8 +112,8 @@ public class Simulacion {
 		Resultado resultado = new Resultado(
 				(NTimeOut/NT) * 100,
 				(STO/T) * 100,
-				(STC/(T * (NT - NTimeOut))) * 100,
-				(STS/NT) - (STLL/NT)
+				(STC/((NT - NTimeOut))),
+				Math.abs(STLL - STS) / NT
 		);
 
 		DecimalFormat df = new DecimalFormat("#.##");
