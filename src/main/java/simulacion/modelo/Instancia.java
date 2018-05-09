@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import static simulacion.modelo.Simulacion.HV;
+
 public class Instancia {
 
 	private static final int MAX_REQUESTS = 250;
@@ -57,7 +59,6 @@ public class Instancia {
 		STC += tiempoActual - ITC;
 	}
 	public void addSTO(Double tiempoActual) {
-		if(ITO > 0)
 		STO += (tiempoActual - ITO);
 	}
 
@@ -75,6 +76,12 @@ public class Instancia {
 
 	public Double getSTC(){
 		return STC;
+	}
+
+	public Hilo algunoConHV() {
+
+		return hilos.stream().filter(hilo -> HV.equals(hilo.getTPS())).findFirst().get();
+
 	}
 
 }

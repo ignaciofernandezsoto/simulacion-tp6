@@ -14,14 +14,13 @@ public class Simulacion {
 	private static final Double DURACION_DE_UN_DIA_SEGUNDOS = 86400D;
 
 	private static final Double tiempoFinal = DURACION_DE_UN_DIA_SEGUNDOS;
-	public static Double HV = tiempoFinal*2;
+	public static Double HV = tiempoFinal * 999;
 	private static final int MAX_REQUESTS = 250;
 
 	private FDP intervaloEntreArribos = new IntervaloEntreArribos();
 	private FDP tiempoDeAtencion = new TiempoDeAtencion();
 
 	private Double STLL = 0D;
-	private Double STLLC = 0D;
 	private Double STSC = 0D;
 	private Double TPLL = 0D;
 	private Double STS = 0D;
@@ -74,10 +73,6 @@ public class Simulacion {
 				Double TA = tiempoDeAtencion.obtenerValor();
 				instMenorRequests.addTPS(TiempoActual + TA);
 			}
-			else{
-				//instMenorRequests.setITC(TiempoActual);
-				STLLC+=TiempoActual;
-			}
 		}
 	}
 
@@ -110,8 +105,8 @@ public class Simulacion {
 	public void imprimirResultados() {
 		Resultado resultado = new Resultado(
 				(NTimeOut/NT) * 100,
-				Math.abs(STSC-STLLC)/(NT - NTimeOut),
-				Math.abs(STLL - STS) /(NT-NTimeOut)
+				(STSC - STLL)/(NT - NTimeOut),
+				(STS - STLL) /(NT-NTimeOut)
 		);
 
 		DecimalFormat df = new DecimalFormat("#.##");
@@ -121,7 +116,7 @@ public class Simulacion {
 		System.out.println("El Porcentaje de Tiempo Ocioso para la Instancia "+i+" es "+ instancias.get(i).getPTO(TiempoActual) + "%");
 		}*/
 
-        System.out.println("El Porcentaje de Tiempo Ocioso " + getPromedioPTOs() / instancias.size() + "%");
+        System.out.println("El Porcentaje de Tiempo Ocioso " + df.format(getPromedioPTOs() / instancias.size()) + "%");
 
 
         System.out.println("El Promedio de Espera en Cola es: " + df.format(resultado.PEC) + " segundos");
@@ -154,7 +149,7 @@ public class Simulacion {
 	}
 
 
-	public void obtenerResultado() {
+	private void obtenerResultado() {
 
 		while(TiempoActual < tiempoFinal)
 			simular();
