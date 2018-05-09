@@ -71,7 +71,7 @@ public class Simulacion {
 				if(instMenorRequests.getRequests() == 1)
 					instMenorRequests.addSTO(TiempoActual);
 				Double TA = tiempoDeAtencion.obtenerValor();
-				instMenorRequests.addTPS(TiempoActual + TA);
+				instMenorRequests.llegada(TiempoActual + TA);
 			}
 		}
 	}
@@ -85,7 +85,7 @@ public class Simulacion {
 		STS += instMenorTPS.getMenorTPS(); // se podría con TiempoActual pero para dejarlo "metódicamente" y hacerlo lindo
 		instMenorTPS.restarRequest();
 
-		if(instMenorTPS.getRequests() >= 1){
+		if(instMenorTPS.getRequests() >= cantHilos){
 			Double TA = tiempoDeAtencion.obtenerValor();
 			instMenorTPS.addTPS(TiempoActual + TA);
 		}

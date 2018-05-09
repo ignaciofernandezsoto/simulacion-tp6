@@ -54,6 +54,18 @@ public class Instancia {
 		this.getHiloMenorTPS().setTPS(tps);
 	}
 
+	public void llegada(Double tps) {
+
+		this.algunoConHV().setTPS(tps);
+
+	}
+
+	private Hilo algunoConHV() {
+
+		return hilos.stream().filter(h -> HV.equals(h.getTPS())).findFirst().get();
+
+	}
+
 	public void addSTC(Double tiempoActual){
 		if(ITC > 0D)
 		STC += tiempoActual - ITC;
@@ -76,12 +88,6 @@ public class Instancia {
 
 	public Double getSTC(){
 		return STC;
-	}
-
-	public Hilo algunoConHV() {
-
-		return hilos.stream().filter(hilo -> HV.equals(hilo.getTPS())).findFirst().get();
-
 	}
 
 }
