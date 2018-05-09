@@ -11,7 +11,7 @@ import simulacion.modelo.fdp.TiempoDeAtencion;
 
 public class Simulacion {
 
-	private static final Double DURACION_DE_UN_DIA_SEGUNDOS = 80D;
+	private static final Double DURACION_DE_UN_DIA_SEGUNDOS = 86400D;
 
 	private static final Double tiempoFinal = DURACION_DE_UN_DIA_SEGUNDOS;
 	public static Double HV = tiempoFinal*2;
@@ -117,10 +117,14 @@ public class Simulacion {
 		DecimalFormat df = new DecimalFormat("#.##");
 
 		System.out.println("Cantidad de Requests " + NT.intValue());
-		for(int i = 0; i < instancias.size(); i++){
+		/*for(int i = 0; i < instancias.size(); i++){
 		System.out.println("El Porcentaje de Tiempo Ocioso para la Instancia "+i+" es "+ instancias.get(i).getPTO(TiempoActual) + "%");
-		}
-		System.out.println("El Promedio de Espera en Cola es: " + df.format(resultado.PEC) + " segundos");
+		}*/
+
+        System.out.println("El Porcentaje de Tiempo Ocioso " + getPromedioPTOs() / instancias.size() + "%");
+
+
+        System.out.println("El Promedio de Espera en Cola es: " + df.format(resultado.PEC) + " segundos");
 		System.out.println("El Promedio de Permanencia en el Sistema es: " + df.format(resultado.PPS) + " segundos");
 		System.out.println("El Porcentaje de TimeOut es: " + df.format(resultado.PT) + "%");
 	}
@@ -134,6 +138,10 @@ public class Simulacion {
 		}
 		return instMenorTPS;
 	}
+
+	private Double getPromedioPTOs(){
+	    return 	instancias.stream().map(ins -> ins.getPTO(TiempoActual)).reduce(0D, (acum, ins) -> acum + ins);
+    }
 
 	private Instancia getInstanciaMenorNS() {
 		Instancia instancia = instancias.get(0);
