@@ -60,7 +60,7 @@ public class Simulacion {
 		TPLL = TiempoActual + IA;
 
 		Instancia instMenorRequests = this.getInstanciaMenorNS();
-		if(instMenorRequests.getRequests() >= (MAX_REQUESTS + cantHilos)) {
+		if(instMenorRequests.getRequests() > (MAX_REQUESTS + cantHilos)) {
 			NTimeOut++;
 		}
 		else{
@@ -105,13 +105,13 @@ public class Simulacion {
 	public void imprimirResultados() {
 		Resultado resultado = new Resultado(
 				(NTimeOut/NT) * 100,
-				(STSC - STLL)/(NT - NTimeOut),
-				(STS - STLL) /(NT-NTimeOut)
+				(STSC - STLL) / (NT - NTimeOut),
+				(STS - STLL) / (NT-NTimeOut)
 		);
 
 		DecimalFormat df = new DecimalFormat("#.##");
 
-		System.out.println("Cantidad de Requests " + NT.intValue());
+		System.out.println("Cantidad de Requests " + NT);
 		/*for(int i = 0; i < instancias.size(); i++){
 		System.out.println("El Porcentaje de Tiempo Ocioso para la Instancia "+i+" es "+ instancias.get(i).getPTO(TiempoActual) + "%");
 		}*/
