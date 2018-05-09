@@ -21,7 +21,6 @@ public class Simulacion {
 
 	private Double STLL = 0D;
 	private Double STO = 0D;
-	private Double ITO = 0D;
 	private Double TPLL = 0D;
 	private Double STC = 0D;
 	private Double STS = 0D;
@@ -80,7 +79,7 @@ public class Simulacion {
 			if(instMenorRequests.getRequests() <= cantHilos) {
 				Double TA = tiempoDeAtencion.obtenerValor();
 				instMenorRequests.addTPS(T + TA);
-				STO += T - ITO;
+				instMenorRequests.addSTO(T);
 			}
 			else{
 				instMenorRequests.setITC(T);
@@ -95,7 +94,7 @@ public class Simulacion {
 		T = instMenorTPS.getMenorTPS();
 		STS += instMenorTPS.getMenorTPS(); // se podría con T pero para dejarlo "metódicamente" y hacerlo lindo
 		instMenorTPS.restarRequest();
-		ITO = T;
+		instMenorTPS.setITO(T);
 
 		if(instMenorTPS.getRequests() >= 1){
 			Double TA = tiempoDeAtencion.obtenerValor();
@@ -111,7 +110,7 @@ public class Simulacion {
 
 		Resultado resultado = new Resultado(
 				(NTimeOut/NT) * 100,
-				(STO/T) * 100,
+				(getSTO()/T) * 100,
 				(STC/((NT - NTimeOut))),
 				Math.abs(STLL - STS) / NT
 		);
@@ -126,9 +125,12 @@ public class Simulacion {
 
 	}
 
+	public Double getSTO() {
+		return instancias.stream().mapToDouble(instancia -> instancia.getSTO()).sum();
+	}
 	public void obtenerResultado() {
 
-		while(T <= tiempoFinal)
+		while(T < tiempoFinal)
 			simular();
 
 		vaciar();

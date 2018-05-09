@@ -10,6 +10,8 @@ public class Instancia {
 
 	private Double cantRequests = 0D;
 	private Double ITC = 0D;
+	private Double ITO = 0D;
+	private Double STO = 0D;
 	private List<Hilo> hilos = new ArrayList<>();
 
 	public Instancia(int cantHilos) {
@@ -46,6 +48,18 @@ public class Instancia {
 
 	public void addTPS(Double tps){
 		this.getHiloMenorTPS().setTPS(tps);
+	}
+
+	public void addSTO(Double tiempoActual) {
+		STO += tiempoActual - ITO;
+	}
+
+	public void setITO(Double tiempo){
+		ITO = tiempo;
+	}
+
+	public Double getSTO(){
+		return STO;
 	}
 
 	public void setITC(Double itc){
