@@ -12,7 +12,9 @@ public class Instancia {
 	private Double ITC = 0D;
 	private Double ITO = 0D;
 	private Double STO = 0D;
-	private List<Hilo> hilos = new ArrayList<>();
+	private Double STC = 0D;
+
+	private List<Hilo> hilos = new ArrayList<Hilo>();
 
 	public Instancia(int cantHilos) {
 		for (int i = 0; i < cantHilos; i++) {
@@ -50,7 +52,12 @@ public class Instancia {
 		this.getHiloMenorTPS().setTPS(tps);
 	}
 
+	public void addSTC(Double tiempoActual){
+		if(ITC > 0D)
+		STC += tiempoActual - ITC;
+	}
 	public void addSTO(Double tiempoActual) {
+		if(ITO > 0)
 		STO += tiempoActual - ITO;
 	}
 
@@ -66,8 +73,8 @@ public class Instancia {
 		this.ITC = itc;
 	}
 
-	public Double getITC(){
-		return ITC;
+	public Double getSTC(){
+		return STC;
 	}
-	
+
 }

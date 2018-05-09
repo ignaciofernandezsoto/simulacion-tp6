@@ -20,11 +20,9 @@ public class Simulacion {
 	private FDP tiempoDeAtencion = new TiempoDeAtencion();
 
 	private Double STLL = 0D;
-	private Double STO = 0D;
 	private Double TPLL = 0D;
-	private Double STC = 0D;
 	private Double STS = 0D;
-	private Double T = 0D;
+	private Double TiempoActual = 0D;
 	private Double NT = 0D;
 	private Double NTimeOut = 0D;
 	private int cantHilos;
@@ -61,12 +59,12 @@ public class Simulacion {
 
 	public void simularLlegada() {
 		NT ++;
-		T = TPLL;
+		TiempoActual = TPLL;
 
 		Double TPLLAux = TPLL;
 
 		Double IA = this.intervaloEntreArribos.obtenerValor();
-		TPLL = T + IA;
+		TPLL = TiempoActual + IA;
 
 		Instancia instMenorRequests = this.getInstanciaMenorNS();
 		if(instMenorRequests.getRequests() > MAX_REQUESTS + cantHilos) {
@@ -77,12 +75,13 @@ public class Simulacion {
 
 			instMenorRequests.agregarRequest();
 			if(instMenorRequests.getRequests() <= cantHilos) {
+				if(instMenorRequests.getRequests() == 1)
+					instMenorRequests.addSTO(TiempoActual);
 				Double TA = tiempoDeAtencion.obtenerValor();
-				instMenorRequests.addTPS(T + TA);
-				instMenorRequests.addSTO(T);
+				instMenorRequests.addTPS(TiempoActual + TA);
 			}
 			else{
-				instMenorRequests.setITC(T);
+				instMenorRequests.setITC(TiempoActual);
 			}
 		}
 	}
@@ -90,15 +89,15 @@ public class Simulacion {
 	public void simularSalida() {
 		Instancia instMenorTPS = this.getInstanciaMenorTPS();
 
-		STC += T - instMenorTPS.getITC();
-		T = instMenorTPS.getMenorTPS();
-		STS += instMenorTPS.getMenorTPS(); // se podría con T pero para dejarlo "metódicamente" y hacerlo lindo
+		instMenorTPS.addSTC(TiempoActual);
+		TiempoActual = instMenorTPS.getMenorTPS();
+		STS += instMenorTPS.getMenorTPS(); // se podría con TiempoActual pero para dejarlo "metódicamente" y hacerlo lindo
 		instMenorTPS.restarRequest();
-		instMenorTPS.setITO(T);
+		instMenorTPS.setITO(TiempoActual);
 
 		if(instMenorTPS.getRequests() >= 1){
 			Double TA = tiempoDeAtencion.obtenerValor();
-			instMenorTPS.addTPS(T + TA);
+			instMenorTPS.addTPS(TiempoActual + TA);
 		}
 		else{
 			instMenorTPS.addTPS(HV);
@@ -107,11 +106,11 @@ public class Simulacion {
 	}
 
 	public void imprimirResultados() {
-
+//(STC/((NT - NTimeOut))), ????
 		Resultado resultado = new Resultado(
 				(NTimeOut/NT) * 100,
-				(getSTO()/T) * 100,
-				(STC/((NT - NTimeOut))),
+				this.getSTO()*100/ TiempoActual,
+				this.getSTC()/(NT - NTimeOut),
 				Math.abs(STLL - STS) / NT
 		);
 
@@ -122,15 +121,19 @@ public class Simulacion {
 		System.out.println("El Promedio de Espera en Cola es: " + df.format(resultado.PEC) + " segundos");
 		System.out.println("El Promedio de Permanencia en el Sistema es: " + df.format(resultado.PPS) + " segundos");
 		System.out.println("El Porcentaje de TimeOut es: " + df.format(resultado.PT) + "%");
-
 	}
 
 	public Double getSTO() {
 		return instancias.stream().mapToDouble(instancia -> instancia.getSTO()).sum();
 	}
+
+	public Double getSTC() {
+		return instancias.stream().mapToDouble(instancia -> instancia.getSTC()).sum();
+	}
+
 	public void obtenerResultado() {
 
-		while(T < tiempoFinal)
+		while(TiempoActual < tiempoFinal)
 			simular();
 
 		vaciar();
