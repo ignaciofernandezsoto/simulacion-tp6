@@ -1,6 +1,5 @@
-package simulacion.modelo;
+package simulacion.modelo.instancia;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 

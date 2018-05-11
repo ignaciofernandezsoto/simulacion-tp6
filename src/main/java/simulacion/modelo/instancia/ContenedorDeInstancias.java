@@ -1,4 +1,4 @@
-package simulacion.modelo;
+package simulacion.modelo.instancia;
 
 import java.util.ArrayList;
 import java.util.List;

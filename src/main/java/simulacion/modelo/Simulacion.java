@@ -3,6 +3,8 @@ package simulacion.modelo;
 import simulacion.modelo.fdp.FDP;
 import simulacion.modelo.fdp.IntervaloEntreArribos;
 import simulacion.modelo.fdp.TiempoDeAtencion;
+import simulacion.modelo.instancia.ContenedorDeInstancias;
+import simulacion.modelo.instancia.Instancia;
 import simulacion.modelo.resultado.ResolvedorDeResultados;
 import simulacion.modelo.resultado.Resultado;
 

@@ -1,4 +1,6 @@
-package simulacion.modelo;
+package simulacion.modelo.instancia;
+
+import simulacion.modelo.Simulacion;
 
 public class Hilo {
 
