@@ -1,9 +1,5 @@
 package simulacion.modelo;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import simulacion.modelo.fdp.FDP;
 import simulacion.modelo.fdp.IntervaloEntreArribos;
 import simulacion.modelo.fdp.TiempoDeAtencion;
@@ -30,15 +26,13 @@ public class Simulacion {
 	private Double NTimeOut = 0D;
 	private int cantHilos;
 
-	private List<Instancia> instancias = new ArrayList();
+	private ContenedorDeInstancias contenedorDeInstancias;
 
 	public Simulacion(int cantInstancias, int cantHilosPorInstancia) {
 
 		cantHilos = cantHilosPorInstancia;
 
-		for (int i = 0; i < cantInstancias; i++) {
-			instancias.add(new Instancia(cantHilosPorInstancia));
-		}
+		this.contenedorDeInstancias = new ContenedorDeInstancias(cantInstancias, cantHilosPorInstancia);
 
 	}
 
@@ -54,7 +48,7 @@ public class Simulacion {
 	}
 
 	private void simular() {
-		Double menorTPS = this.getInstanciaMenorTPS().getMenorTPS();
+		Double menorTPS = contenedorDeInstancias.getInstanciaMenorTPS().getMenorTPS();
 
 		if(TPLL <= menorTPS)
 			this.simularLlegada();
@@ -72,7 +66,7 @@ public class Simulacion {
 		Double IA = this.intervaloEntreArribos.obtenerValor();
 		TPLL = TiempoActual + IA;
 
-		Instancia instMenorRequests = this.getInstanciaMenorNS();
+		Instancia instMenorRequests = contenedorDeInstancias.getInstanciaMenorNS();
 		if(instMenorRequests.getRequests() > (MAX_REQUESTS + cantHilos)) {
 			NTimeOut++;
 		}
@@ -90,7 +84,7 @@ public class Simulacion {
 	}
 
 	private void simularSalida() {
-		Instancia instMenorTPS = this.getInstanciaMenorTPS();
+		Instancia instMenorTPS = contenedorDeInstancias.getInstanciaMenorTPS();
 
 		//instMenorTPS.addSTC(TiempoActual);
 		STSC+=TiempoActual;
@@ -108,10 +102,9 @@ public class Simulacion {
 		}
 	}
 
-
 	private void vaciar() {
 		TPLL = HV;
-		while (hayQueVaciar())
+		while (contenedorDeInstancias.hayQueVaciar())
 			simular();
 	}
 
@@ -123,37 +116,10 @@ public class Simulacion {
                 STSC,
                 STLL,
                 STS,
-                instancias
-                        .stream()
-                        .map(ins -> ins.getPTO(TiempoActual))
-                        .collect(Collectors.toList()),
-                instancias.size()
+                contenedorDeInstancias.obtenerPTOs(TiempoActual),
+                contenedorDeInstancias.cantidadDeInstancias()
         ).resolver();
 
-	}
-
-	private Instancia getInstanciaMenorTPS() {
-		Instancia instMenorTPS = instancias.get(0);
-
-		for(int i=1; i < instancias.size(); i++) {
-			if(instMenorTPS.getMenorTPS() > instancias.get(i).getMenorTPS())
-				instMenorTPS = instancias.get(i);
-		}
-		return instMenorTPS;
-	}
-
-	private Instancia getInstanciaMenorNS() {
-		Instancia instancia = instancias.get(0);
-
-		for(int i=1; i < instancias.size(); i++){
-			if(instancia.getRequests() > instancias.get(i).getRequests())
-				instancia = instancias.get(i);
-		}
-		return instancia;
-	}
-
-	private boolean hayQueVaciar() {
-		return instancias.stream().mapToDouble(Instancia::getRequests).sum() > 0;
 	}
 
 }
