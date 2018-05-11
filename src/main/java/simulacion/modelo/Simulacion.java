@@ -1,6 +1,5 @@
 package simulacion.modelo;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,6 +7,8 @@ import java.util.stream.Collectors;
 import simulacion.modelo.fdp.FDP;
 import simulacion.modelo.fdp.IntervaloEntreArribos;
 import simulacion.modelo.fdp.TiempoDeAtencion;
+import simulacion.modelo.resultado.ResolvedorDeResultados;
+import simulacion.modelo.resultado.Resultado;
 
 public class Simulacion {
 
@@ -32,13 +33,25 @@ public class Simulacion {
 	private List<Instancia> instancias = new ArrayList();
 
 	public Simulacion(int cantInstancias, int cantHilosPorInstancia) {
+
 		cantHilos = cantHilosPorInstancia;
+
 		for (int i = 0; i < cantInstancias; i++) {
 			instancias.add(new Instancia(cantHilosPorInstancia));
 		}
-		this.obtenerResultado();
+
 	}
 
+	public Resultado obtenerResultado() {
+
+		while(TiempoActual < tiempoFinal)
+			simular();
+
+		vaciar();
+
+		return this.construirResultados();
+
+	}
 
 	private void simular() {
 		Double menorTPS = this.getInstanciaMenorTPS().getMenorTPS();
@@ -50,7 +63,7 @@ public class Simulacion {
 	}
 
 
-	public void simularLlegada() {
+	private void simularLlegada() {
 		NT ++;
 		TiempoActual = TPLL;
 
@@ -76,7 +89,7 @@ public class Simulacion {
 		}
 	}
 
-	public void simularSalida() {
+	private void simularSalida() {
 		Instancia instMenorTPS = this.getInstanciaMenorTPS();
 
 		//instMenorTPS.addSTC(TiempoActual);
@@ -102,26 +115,21 @@ public class Simulacion {
 			simular();
 	}
 
-	public void imprimirResultados() {
-		Resultado resultado = new Resultado(
-				(NTimeOut/NT) * 100,
-				(STSC - STLL) / (NT - NTimeOut),
-				(STS - STLL) / (NT-NTimeOut)
-		);
+	private Resultado construirResultados() {
 
-		DecimalFormat df = new DecimalFormat("#.##");
+        return new ResolvedorDeResultados(
+                NT,
+                NTimeOut,
+                STSC,
+                STLL,
+                STS,
+                instancias
+                        .stream()
+                        .map(ins -> ins.getPTO(TiempoActual))
+                        .collect(Collectors.toList()),
+                instancias.size()
+        ).resolver();
 
-		System.out.println("Cantidad de Requests " + NT);
-		/*for(int i = 0; i < instancias.size(); i++){
-		System.out.println("El Porcentaje de Tiempo Ocioso para la Instancia "+i+" es "+ instancias.get(i).getPTO(TiempoActual) + "%");
-		}*/
-
-        System.out.println("El Porcentaje de Tiempo Ocioso " + df.format(getPromedioPTOs() / instancias.size()) + "%");
-
-
-        System.out.println("El Promedio de Espera en Cola es: " + df.format(resultado.PEC) + " segundos");
-		System.out.println("El Promedio de Permanencia en el Sistema es: " + df.format(resultado.PPS) + " segundos");
-		System.out.println("El Porcentaje de TimeOut es: " + df.format(resultado.PT) + "%");
 	}
 
 	private Instancia getInstanciaMenorTPS() {
@@ -134,10 +142,6 @@ public class Simulacion {
 		return instMenorTPS;
 	}
 
-	private Double getPromedioPTOs(){
-	    return 	instancias.stream().map(ins -> ins.getPTO(TiempoActual)).reduce(0D, (acum, ins) -> acum + ins);
-    }
-
 	private Instancia getInstanciaMenorNS() {
 		Instancia instancia = instancias.get(0);
 
@@ -148,21 +152,8 @@ public class Simulacion {
 		return instancia;
 	}
 
-
-	private void obtenerResultado() {
-
-		while(TiempoActual < tiempoFinal)
-			simular();
-
-		vaciar();
-		this.imprimirResultados();
-
-	}
-
-
 	private boolean hayQueVaciar() {
 		return instancias.stream().mapToDouble(Instancia::getRequests).sum() > 0;
 	}
-
 
 }

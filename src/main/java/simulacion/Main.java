@@ -1,5 +1,6 @@
 package simulacion;
 
+import simulacion.modelo.resultado.Resultado;
 import simulacion.modelo.Simulacion;
 
 import java.util.Scanner;
@@ -20,7 +21,14 @@ public class Main {
 		System.out.println("Comenzando la simulacion de la aplicación HTTP con "
                 + instancias + " servidores y " + hilosPorInstancia +" hilos por cada servidor");
 
-		new Simulacion(instancias, hilosPorInstancia);
+		Simulacion simulacion = new Simulacion(instancias, hilosPorInstancia);
+
+		Resultado resultado = simulacion.obtenerResultado();
+
+
+
+		simulacion.
+
 	}
 	
 }
