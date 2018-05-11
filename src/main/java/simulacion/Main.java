@@ -1,6 +1,5 @@
 package simulacion;
 
-import simulacion.modelo.resultado.Resultado;
 import simulacion.modelo.Simulacion;
 
 import java.util.Scanner;
@@ -23,11 +22,9 @@ public class Main {
 
 		Simulacion simulacion = new Simulacion(instancias, hilosPorInstancia);
 
-		Resultado resultado = simulacion.obtenerResultado();
-
-
-
-		simulacion.
+		simulacion
+				.obtenerResultado()
+				.imprimir();
 
 	}
 	

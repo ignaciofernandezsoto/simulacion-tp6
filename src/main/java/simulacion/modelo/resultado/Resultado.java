@@ -1,5 +1,7 @@
 package simulacion.modelo.resultado;
 
+import java.text.DecimalFormat;
+
 public class Resultado {
 
     private Double PT;
@@ -12,6 +14,17 @@ public class Resultado {
         this.PEC = PEC;
         this.PPS = PPS;
         this.PTO = PTO;
+    }
+
+    public void imprimir() {
+
+        DecimalFormat df = new DecimalFormat("#.##");
+
+        System.out.println("El Porcentaje de Tiempo Ocioso " + df.format(this.getPTO()) + "%");
+        System.out.println("El Promedio de Espera en Cola es: " + df.format(this.getPEC()) + " segundos");
+        System.out.println("El Promedio de Permanencia en el Sistema es: " + df.format(this.getPPS()) + " segundos");
+        System.out.println("El Porcentaje de TimeOut es: " + df.format(this.getPT()) + "%");
+        
     }
 
     public Double getPT() {
